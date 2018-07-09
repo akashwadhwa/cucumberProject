@@ -43,24 +43,31 @@ public class CheckPriceStepDefinition extends DriverFactory{
 
 	@When("^he looks at a return trip from DXB to LHR leaving one week from now$")
 	public void he_looks_at_a_return_trip_from_DXB_to_LHR_leaving_one_week_from_now() throws Throwable {
-		WebElement departureInputField =  driver.findElement(By.xpath("//input[@name='Departure airport']"));
-		WebElement arrivalInputField =  driver.findElement(By.xpath("//input[@name='Arrival airport']"));
-		WebElement searchFlightDatePicker = driver.findElement(By.id("search-flight-date-picker--depart"));
+                WebElement departureInputField =  driver.findElement(By.xpath("(//div[@class='dropdown__input-container js-dropdown-open'])[1]"));
+		WebElement departureInputFieldBox =  driver.findElement(By.xpath("//input[@name='Departure airport']"));
+		WebElement arrivalInputFieldBox =  driver.findElement(By.xpath("//input[@name='Arrival airport']"));
+		WebElement arrivalInputField =  driver.findElement(By.xpath("(//div[@class='dropdown__input-container js-dropdown-open'])[2]"));
 		WebElement departureDateLocator = driver.findElement(By.xpath("(//a[contains(text(),'14')])[1]"));
 		WebElement arrivalDateLocator = driver.findElement(By.xpath("(//a[contains(text(),'14')])[1]"));
 		WebElement searchFlightsBtn = driver.findElement(By.xpath("//button//span[contains(text(),'Search flights')]"));
-		WebElement banner = driver.findElement(By.xpath("//div[contains(@class,'hero__content')]"));
-		WebElement continueBtn = driver.findElement(By.xpath("//span[contains(text(),'Continue')]"));
-		
-		JavascriptExecutor js = (JavascriptExecutor) driver;  
-		js.executeScript("arguments[0].value='DXB';", departureInputField);
-		js.executeScript("arguments[0].value='LHR';", arrivalInputField);
-		js.executeScript("var evt = document.createEvent('HTMLEvents'); evt.initEvent('change',true,true); arguments[0].dispatchEvent(evt);",arrivalInputField);
-		continueBtn.click();
-		Thread.sleep(5000);
+
+		Actions act = new Actions(driver); 
+
+		departureInputField.click();
+		departureInputFieldBox.sendKeys("DXB");
+		Thread.sleep(2000);
+		WebElement departureAirportValue = driver.findElement(By.xpath("//p[contains(text(),'DXB')]"));
+		act.moveToElement(departureAirportValue).click().build().perform();
+
+		arrivalInputField.click();
+		arrivalInputFieldBox.sendKeys("LHR");
+		Thread.sleep(2000);
+		WebElement arrivalAirportValue = driver.findElement(By.xpath("//p[contains(text(),'LHR')]"));
+		act.moveToElement(arrivalAirportValue).click().build().perform();
+
+		JavascriptExecutor js = (JavascriptExecutor) driver; 
 		js.executeScript("arguments[0].click();", departureDateLocator);
 		js.executeScript("arguments[0].click();", arrivalDateLocator);
-		banner.click();
 		searchFlightsBtn.click();
 
 	}
