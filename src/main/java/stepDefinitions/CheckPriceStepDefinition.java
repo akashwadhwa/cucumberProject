@@ -43,6 +43,7 @@ public class CheckPriceStepDefinition extends DriverFactory{
 	public void he_looks_at_a_return_trip_from_DXB_to_LHR_leaving_one_week_from_now() throws Throwable {
 
 		new LandingPage(driver).selectDepartureCity();
+		Thread.sleep(10000);
 		new LandingPage(driver).selectArrivalCity();
 		new LandingPage(driver).selectDepartureDate();
 		new LandingPage(driver).selectArrivalDate();
